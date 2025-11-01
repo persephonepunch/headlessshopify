@@ -2240,6 +2240,27 @@ a {
   inset: 0%;
 }
 
+.btn-w {
+  color: #fffefa;
+  text-align: center;
+  background-color: #2facff;
+  border-radius: 2em;
+  min-width: 11em;
+  padding: .75em 2em .875em;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .2s;
+}
+
+.btn-w:hover {
+  background-color: #3e4ceb;
+}
+
+.shopnowtext {
+  font-weight: 200;
+}
+
 @media screen and (max-width: 991px) {
   .navbar {
     justify-content: space-between;
@@ -2691,6 +2712,10 @@ a {
 
   .modal-content-w {
     padding: 1.5rem;
+  }
+
+  .btn-w {
+    font-size: .9375rem;
   }
 }
 
