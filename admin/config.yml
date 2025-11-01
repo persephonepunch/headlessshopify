@@ -1,0 +1,2716 @@
+backend:
+  name: git-gateway
+  accept_roles:
+    - admin
+    - editor
+  branch: master
+media_folder: theme/assets/images
+public_folder: /assets/images
+collections:
+  - name: pages
+    label: Pages
+    identifier_field: title
+    extension: md
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    folder: cms/pages
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '{{slug}}.html'
+      - &ref_0
+        label: Seo
+        name: seo
+        widget: object
+        collapsed: true
+        fields:
+          - label: Title
+            name: title
+            widget: string
+            required: false
+          - label: Description
+            name: description
+            widget: string
+            required: false
+          - label: No index
+            name: noindex
+            widget: boolean
+            default: false
+            required: false
+          - label: Open Graph Title
+            name: og:title
+            widget: string
+            required: false
+          - label: Open Graph Image
+            name: og:image
+            widget: image
+            required: false
+            media_library:
+              config:
+                multiple: false
+          - label: Twitter Title
+            name: twitter:title
+            widget: string
+            default: summary
+            required: false
+          - label: Twitter Card
+            name: twitter:card
+            widget: string
+            default: summary
+            required: false
+          - label: Twitter Site
+            name: twitter:site
+            widget: string
+            required: false
+          - label: Twitter Creator
+            name: twitter:creator
+            widget: string
+            required: false
+          - label: Twitter Image
+            name: twitter:image
+            widget: image
+            required: false
+            media_library:
+              config:
+                multiple: false
+          - label: Additional HTML tags
+            name: additional_tags
+            widget: text
+            required: false
+  - name: gaming_bundles
+    label: Gaming Bundles
+    folder: cms/gaming-bundles
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-bundles
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-bundles].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_monitors
+    label: Gaming Monitors
+    folder: cms/gaming-monitors
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-monitors
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-monitors].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_laptops
+    label: Gaming Laptops
+    folder: cms/gaming-laptops
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-laptops
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-laptops].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_desktops
+    label: Gaming Desktops
+    folder: cms/gaming-desktops
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-desktops
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-desktops].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: tags
+    label: Tags
+    folder: cms/tags
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: tags
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[tags].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: collections
+    label: Collections
+    folder: cms/collections
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: collections
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[collections].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_accessories
+    label: Gaming Accessories
+    folder: cms/gaming-accessories
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-accessories
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-accessories].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: content_creation
+    label: Content Creations
+    folder: cms/content-creation
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: content-creation
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[content-creation].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_controllers
+    label: Gaming Controllers
+    folder: cms/gaming-controllers
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-controllers
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-controllers].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: console_gaming
+    label: Console Gamings
+    folder: cms/console-gaming
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: console-gaming
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[console-gaming].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_mouse_pads
+    label: Gaming Mouse Pads
+    folder: cms/gaming-mouse-pads
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-mouse-pads
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-mouse-pads].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_mice
+    label: Items
+    folder: cms/gaming-mice
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-mice
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-mice].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_keyboards
+    label: Gaming Keyboards
+    folder: cms/gaming-keyboards
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-keyboards
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-keyboards].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_earbuds
+    label: Gaming Earbuds
+    folder: cms/gaming-earbuds
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-earbuds
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-earbuds].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: microphones
+    label: Microphones
+    folder: cms/microphones
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: microphones
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[microphones].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: gaming_headsets
+    label: Gaming Headsets
+    folder: cms/gaming-headsets
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: gaming-headsets
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[gaming-headsets].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: category
+    label: Categories
+    folder: cms/category
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: category
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[category].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: product
+    label: Products
+    folder: cms/product
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: variation-properties
+        label: Variation Properties
+        widget: list
+        required: false
+        summary: '{{name}}'
+        fields:
+          - hint: ''
+            name: slug
+            label: Slug
+            widget: hidden
+            required: true
+          - hint: ''
+            name: name
+            label: Name
+            widget: string
+            required: true
+          - hint: ''
+            name: values
+            label: Values
+            widget: list
+            required: true
+            summary: '{{name}}'
+            fields:
+              - hint: ''
+                name: slug
+                label: Slug
+                widget: hidden
+                required: true
+              - hint: ''
+                name: name
+                label: Name
+                widget: string
+                required: true
+      - hint: ''
+        name: variations
+        label: Variations
+        widget: list
+        required: true
+        summary: '{{title}}'
+        min: 1
+        fields:
+          - hint: Slug of the variation
+            name: slug
+            label: Slug
+            widget: string
+            required: true
+          - hint: Default variation?
+            name: default
+            label: Default
+            widget: boolean
+            required: true
+          - hint: ''
+            name: variation-properties
+            label: SKU Values
+            widget: prop-values
+            required: false
+          - hint: ''
+            name: title
+            label: Name
+            widget: string
+            required: true
+          - hint: ''
+            name: f_main-image
+            label: Main Image
+            widget: object
+            required: false
+            fields:
+              - hint: ''
+                name: url
+                label: Image
+                widget: image
+                required: false
+                allow_multiple: false
+              - hint: Image Alt
+                name: alt
+                label: alt
+                widget: string
+                required: false
+          - hint: ''
+            name: f_more-images
+            label: More Images
+            widget: list
+            required: false
+            fields:
+              - hint: ''
+                name: url
+                label: Image
+                widget: image
+                required: false
+                allow_multiple: false
+              - hint: Image Alt
+                name: alt
+                label: alt
+                widget: string
+                required: false
+          - hint: ''
+            name: f_price
+            label: Price
+            widget: price
+            required: true
+          - hint: Compare at Price must be higher than price
+            name: f_compare-at-price
+            label: Compare at price
+            widget: price
+            required: false
+          - hint: ''
+            name: f_download-files
+            label: Downloads
+            widget: list
+            required: false
+            fields:
+              - hint: ''
+                name: url
+                label: Image
+                widget: image
+                required: false
+                allow_multiple: false
+              - hint: Image Alt
+                name: alt
+                label: alt
+                widget: string
+                required: false
+          - hint: ''
+            name: f_width
+            label: Width
+            widget: number
+            required: false
+          - hint: ''
+            name: f_length
+            label: Length
+            widget: number
+            required: false
+          - hint: ''
+            name: f_height
+            label: Height
+            widget: number
+            required: false
+          - hint: ''
+            name: f_weight
+            label: Weight
+            widget: number
+            required: false
+          - hint: ''
+            name: f_sku
+            label: SKU
+            widget: string
+            required: false
+          - hint: ''
+            name: f__noSearch
+            label: No Search
+            widget: boolean
+            required: false
+            default: false
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: Add this product to one or more categories.
+        name: f_category
+        label: Categories
+        widget: relation
+        required: false
+        collection: category
+        value_field: cms/category/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: true
+      - hint: ''
+        name: f_description
+        label: Description
+        widget: string
+        required: false
+      - hint: ''
+        name: f_shippable
+        label: Requires Shipping
+        widget: boolean
+        required: false
+        default: false
+      - hint: ''
+        name: f_ec-product-type
+        label: Product type
+        widget: select
+        required: false
+        options:
+          - label: Physical
+            value: Physical
+          - label: Digital
+            value: Digital
+          - label: Service
+            value: Service
+          - label: Membership
+            value: Membership
+          - label: Advanced
+            value: Advanced
+      - hint: ''
+        name: f__noSearch
+        label: No Search
+        widget: boolean
+        required: false
+        default: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: product
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[product].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - label: Theme Settings
+    name: settings
+    identifier_field: title
+    extension: json
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    files:
+      - label: General
+        name: site
+        file: cms/_data/settings/site.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: General
+          - hint: Full domain url (needed for a correct sitemap file)
+            name: domain
+            label: Domain
+            widget: string
+            required: false
+          - name: favicon
+            label: Favicon
+            widget: image
+            allow_multiple: false
+            required: false
+          - name: apple_touch_icon
+            label: Apple Touch Icon
+            widget: image
+            allow_multiple: false
+            required: false
+          - name: header_additional_content
+            label: Additional Content Header
+            hint: Content here will be placed before </head> tag
+            widget: text
+            required: false
+          - name: footer_additional_content
+            label: Additional Content Footer
+            hint: Content here will be placed before </body> tag
+            widget: text
+            required: false
+          - name: images_optimization
+            label: Images Optimization
+            widget: object
+            collapsed: false
+            fields:
+              - label: Image Formats
+                name: formats
+                widget: select
+                multiple: true
+                options:
+                  - label: Avif
+                    value: avif
+                  - label: Webp
+                    value: webp
+              - label: Image Dimensions
+                name: dimensions
+                widget: select
+                multiple: true
+                options:
+                  - label: '500'
+                    value: 500
+                  - label: '800'
+                    value: 800
+                  - label: '1080'
+                    value: 1080
+                  - label: '1600'
+                    value: 1600
+                  - label: '2000'
+                    value: 2000
+                  - label: '2600'
+                    value: 2600
+      - label: Colors
+        name: colors
+        file: cms/_data/colors.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Colors
+      - label: Texts
+        name: texts
+        file: cms/_data/texts.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Texts
+          - hint: 'Original text: laptops, key: -2f83a27'
+            label: Text
+            name: '-2f83a27'
+            widget: string
+          - hint: 'Original text: desktops, key: 3d2273d7'
+            label: Text
+            name: 3d2273d7
+            widget: string
+          - hint: 'Original text: monitors, key: -139911a7'
+            label: Text
+            name: '-139911a7'
+            widget: string
+          - hint: 'Original text: accessories, key: -3ca85cd0'
+            label: Text
+            name: '-3ca85cd0'
+            widget: string
+          - hint: 'Original text: OMEN 35L, key: 71d58991'
+            label: Text
+            name: 71d58991
+            widget: string
+          - hint: 'Original text: Play with the best., key: 6e73edcd'
+            label: Text
+            name: 6e73edcd
+            widget: string
+          - hint: >-
+              Original text: Our first desktop built with OMEN components, the
+              OMEN 35L is pre-tuned for all-out performance right out of the
+              box. And with more ways to upgrade for the future, there’s no
+              limit to how you can win., key: -3067ef7f
+            label: Text
+            name: '-3067ef7f'
+            widget: text
+          - hint: 'Original text: SHOP NOW, key: 1a08228c'
+            label: Text
+            name: 1a08228c
+            widget: string
+          - hint: 'Original text: Close Modal, key: 148b4a45'
+            label: Text
+            name: 148b4a45
+            widget: string
+          - hint: 'Original text: It’s the inside that counts., key: -69016fb5'
+            label: Text
+            name: '-69016fb5'
+            widget: string
+          - hint: >-
+              Original text: From the most powerful Intel® and AMD processors
+              all the way up to the NVIDIA® GeForce RTX™ 4090, the OMEN 35L is
+              more than capable of playing at full speed. Plus with up to four
+              fans available, you’ll also play it cool., key: 50dd8755
+            label: Text
+            name: 50dd8755
+            widget: text
+          - hint: 'Original text: CPU, key: 10588'
+            label: Text
+            name: '10588'
+            widget: string
+          - hint: >-
+              Original text: Up to AMD Ryzen™ 7 8700G with up to 16 AI TOPS,
+              key: 199d1902
+            label: Text
+            name: 199d1902
+            widget: string
+          - hint: 'Original text: GPU, key: 1148c'
+            label: Text
+            name: 1148c
+            widget: string
+          - hint: >-
+              Original text: Up to AMD Radeon™ RX 7600 or NVIDIA® GeForce RTX™
+              4090, key: -6ca7f99a
+            label: Text
+            name: '-6ca7f99a'
+            widget: string
+          - hint: 'Original text: MEMORY, key: -78aa4eff'
+            label: Text
+            name: '-78aa4eff'
+            widget: string
+          - hint: >-
+              Original text: Up to Kingston FURY 64GB DDR5 6000 MT/s Memory,
+              key: 7ad67047
+            label: Text
+            name: 7ad67047
+            widget: string
+          - hint: 'Original text: STORAGE, key: -458431a5'
+            label: Text
+            name: '-458431a5'
+            widget: string
+          - hint: 'Original text: Up to Two 2TB SSD & , key: 4e68430a'
+            label: Text
+            name: 4e68430a
+            widget: string
+          - hint: 'Original text: 2TB HDD Storage, key: 32ad8703'
+            label: Text
+            name: 32ad8703
+            widget: string
+          - hint: 'Original text: COOLING, key: 638d43d9'
+            label: Text
+            name: 638d43d9
+            widget: string
+          - hint: 'Original text: Up to OMEN 240mm LCD Liquid Cooler, key: -7c5a764'
+            label: Text
+            name: '-7c5a764'
+            widget: string
+          - hint: 'Original text: SIZE, key: 26d801'
+            label: Text
+            name: 26d801
+            widget: string
+          - hint: 'Original text: 8.27 x 16.06 , key: 4c95bafe'
+            label: Text
+            name: 4c95bafe
+            widget: string
+          - hint: 'Original text: x 16.14 in, key: 66ee91e1'
+            label: Text
+            name: 66ee91e1
+            widget: string
+          - hint: 'Original text: Battle ready, right out of the box., key: 638866b6'
+            label: Text
+            name: 638866b6
+            widget: string
+          - hint: >-
+              Original text: From the power supply to the CPU cooler, the 35L is
+              the first desktop built with OMEN components. That means
+              everything is pre-tuned to perform at its peak from the moment you
+              power on., key: -1328106e
+            label: Text
+            name: '-1328106e'
+            widget: text
+          - hint: 'Original text: omen components, key: b8365cf'
+            label: Text
+            name: b8365cf
+            widget: string
+          - hint: 'Original text: OMEN inside., key: -61f01867'
+            label: Text
+            name: '-61f01867'
+            widget: string
+          - hint: >-
+              Original text: Win today and conquer tomorrow with easily
+              upgradable OMEN components including case fans, liquid cooling
+              options and power supply., key: -560fdace
+            label: Text
+            name: '-560fdace'
+            widget: text
+          - hint: 'Original text: Omen fan, key: 46fbba9a'
+            label: Text
+            name: 46fbba9a
+            widget: string
+          - hint: >-
+              Original text: Keep your rig cool and your gameplay on fire with
+              the OMEN Gaming Tower Fan. Silent, powerful airflow for
+              uninterrupted domination., key: -3991a734
+            label: Text
+            name: '-3991a734'
+            widget: text
+          - hint: 'Original text: WATCH , key: -67cf36af'
+            label: Text
+            name: '-67cf36af'
+            widget: string
+          - hint: 'Original text: INSTALL, key: -60864e85'
+            label: Text
+            name: '-60864e85'
+            widget: string
+          - hint: 'Original text: Omen PSU, key: 46fb6639'
+            label: Text
+            name: 46fb6639
+            widget: string
+          - hint: >-
+              Original text: Power your victories with the OMEN PSU, delivering
+              reliable energy for peak performance. Silent and efficient, it
+              ensures your system runs smoothly., key: 66656455
+            label: Text
+            name: '66656455'
+            widget: text
+          - hint: 'Original text: OMEN CPU COOLER, key: -419379f9'
+            label: Text
+            name: '-419379f9'
+            widget: string
+          - hint: >-
+              Original text: Keep your system chill and your performance sharp
+              with the OMEN CPU Cooler. Silent and efficient, it ensures peak
+              power for uninterrupted gaming domination., key: -2254a447
+            label: Text
+            name: '-2254a447'
+            widget: text
+          - hint: 'Original text: FULL SPECIFICATIONS, key: -6c6d5e7f'
+            label: Text
+            name: '-6c6d5e7f'
+            widget: string
+          - hint: 'Original text: Play with AI performance., key: 4f48ace8'
+            label: Text
+            name: 4f48ace8
+            widget: string
+          - hint: 'Original text: AMD Ryzen™ 8040, key: 24953306'
+            label: Text
+            name: '24953306'
+            widget: string
+          - hint: 'Original text: Beyond fast., key: 3807621'
+            label: Text
+            name: '3807621'
+            widget: string
+          - hint: >-
+              Original text: Unlock new levels of play, performance and
+              efficiency with the AMD Ryzen™ 8040. A dedicated NPU, GPU and CPU
+              work together to perform up to 39 trillion operations per second,
+              the most you can get on a consumer Windows x86 processor today.,
+              key: -334e70ef
+            label: Text
+            name: '-334e70ef'
+            widget: text
+          - hint: 'Original text: Thermal control, key: 7bd5c9b4'
+            label: Text
+            name: 7bd5c9b4
+            widget: string
+          - hint: 'Original text: Turn up the, key: -6b80f1b1'
+            label: Text
+            name: '-6b80f1b1'
+            widget: string
+          - hint: 'Original text: cool factor., key: -435bdd18'
+            label: Text
+            name: '-435bdd18'
+            widget: string
+          - hint: >-
+              Original text: Featuring a proprietary fan curve and customizable
+              ARGB air cooler with options for 2 and 4 heat pipes, the OMEN 35L
+              delivers a 10-14% thermal improvement plus superior noise and heat
+              reduction in one package. For advanced cooling, the 240mm Liquid
+              Cooler with LCD option ensures optimal temperature control and a
+              visual flair to complement your setup., key: 4c9ba7a1
+            label: Text
+            name: 4c9ba7a1
+            widget: text
+          - hint: 'Original text: 2X, key: 666'
+            label: Text
+            name: '666'
+            widget: string
+          - hint: 'Original text: 140mm Front Fans, key: -67f4f336'
+            label: Text
+            name: '-67f4f336'
+            widget: string
+          - hint: 'Original text: 14%, key: be62'
+            label: Text
+            name: be62
+            widget: string
+          - hint: 'Original text: Thermal Improvement, key: 61baf58d'
+            label: Text
+            name: 61baf58d
+            widget: string
+          - hint: 'Original text: Case Dimensions (35mm x 68mm), key: 7e40e446'
+            label: Text
+            name: 7e40e446
+            widget: string
+          - hint: 'Original text: 244mm x 244mm mATX Motherboard, key: 734dd97f'
+            label: Text
+            name: 734dd97f
+            widget: string
+          - hint: >-
+              Original text: Sustainable design with recycled materials, key:
+              -73fb528
+            label: Text
+            name: '-73fb528'
+            widget: string
+          - hint: >-
+              Original text: Easily upgradeable with tool-free access, key:
+              -7ce760ee
+            label: Text
+            name: '-7ce760ee'
+            widget: string
+          - hint: >-
+              Original text: Advancing the future of ai in gaming., key:
+              5527b460
+            label: Text
+            name: 5527b460
+            widget: string
+          - hint: "Original text: Experience the future of gaming with AI-enhanced OMEN PCs. With features like\_ AMD Ryzen™ AI, a dedicated AI engine designed for the ultimate in AI processing efficiency; an AMD Radeon™ graphics engine optimized for AI workloads; and AMD Ryzen™ processor cores that also have powerful AI capabilities., key: -6325a06b"
+            label: Text
+            name: '-6325a06b'
+            widget: text
+          - hint: 'Original text: omen gaming hub, key: 4c68883d'
+            label: Text
+            name: 4c68883d
+            widget: string
+          - hint: 'Original text: Maximize your play, key: 498ea6cd'
+            label: Text
+            name: 498ea6cd
+            widget: string
+          - hint: >-
+              Original text: Elevate your gaming every time you play. This
+              all-in-one suite seamlessly combines performance optimization,
+              personalization tools, plus game content and services to unlock an
+              unparalleled gaming experience., key: 1f60d8f7
+            label: Text
+            name: 1f60d8f7
+            widget: text
+          - hint: 'Original text: EXPLORE THE, key: 29f4e524'
+            label: Text
+            name: 29f4e524
+            widget: string
+          - hint: 'Original text: GAMING HUB, key: 43321d64'
+            label: Text
+            name: 43321d64
+            widget: string
+          - hint: 'Original text: complete the package, key: -3d19a0d0'
+            label: Text
+            name: '-3d19a0d0'
+            widget: string
+          - hint: 'Original text: Desktops, key: 40fcd7f7'
+            label: Text
+            name: 40fcd7f7
+            widget: string
+          - hint: 'Original text: Accessories, key: 26c14b10'
+            label: Text
+            name: 26c14b10
+            widget: string
+          - hint: 'Original text: LAPTOPS, key: 27d351b9'
+            label: Text
+            name: 27d351b9
+            widget: string
+          - hint: 'Original text: DESKTOPS, key: 6bc863d7'
+            label: Text
+            name: 6bc863d7
+            widget: string
+          - hint: 'Original text: MONITORS, key: 1b0cde59'
+            label: Text
+            name: 1b0cde59
+            widget: string
+          - hint: 'Original text: ACCESSORIES, key: 43ab3710'
+            label: Text
+            name: 43ab3710
+            widget: string
+          - hint: 'Original text: SUPPORT, key: -43c1f451'
+            label: Text
+            name: '-43c1f451'
+            widget: string
+          - hint: >-
+              Original text: Sign up for our newsletter to receive a 20%
+              discount*!, key: 6d49a658
+            label: Text
+            name: 6d49a658
+            widget: string
+          - hint: 'Original text: ‍, key: 200d'
+            label: Text
+            name: 200d
+            widget: string
+          - hint: >-
+              Original text: Get a sneak peek at our new products when , key:
+              74db315b
+            label: Text
+            name: 74db315b
+            widget: string
+          - hint: >-
+              Original text: you sign up to join the HyperX Family., key:
+              42c5dd59
+            label: Text
+            name: 42c5dd59
+            widget: string
+          - hint: >-
+              Original text: I am happy to receive emails from HyperX on its
+              products and info. HyperX respects your privacy. Visit our , key:
+              -b480bd
+            label: Text
+            name: '-b480bd'
+            widget: text
+          - hint: 'Original text: Privacy Statement, key: -22f3f969'
+            label: Text
+            name: '-22f3f969'
+            widget: string
+          - hint: >-
+              Original text:  to learn how HyperX collects and uses your
+              personal data., key: -4880aac6
+            label: Text
+            name: '-4880aac6'
+            widget: string
+          - hint: 'Original text: * Terms & Conditions apply, key: 9bf3b6f'
+            label: Text
+            name: 9bf3b6f
+            widget: string
+          - hint: >-
+              Original text: Thank you! Your submission has been received!, key:
+              5a0ea5a1
+            label: Text
+            name: 5a0ea5a1
+            widget: string
+          - hint: >-
+              Original text: Oops! Something went wrong while submitting the
+              form., key: -7c112e99
+            label: Text
+            name: '-7c112e99'
+            widget: string
+          - hint: 'Original text: monitors / omen 32, key: -bee99e0'
+            label: Text
+            name: '-bee99e0'
+            widget: string
+      - label: Links
+        name: links
+        file: cms/_data/links.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Links
+          - hint: 'Original link: #, key: 23'
+            label: Link
+            name: '23'
+            widget: string
+          - hint: >-
+              Original link: https://www.hp.com/uk-en/privacy/privacy.html, key:
+              -4851c82b
+            label: Link
+            name: '-4851c82b'
+            widget: string
+      - label: Images
+        name: images
+        file: cms/_data/images.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Images
+          - label: Image
+            name: '-4b721957'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 20a0eb1d
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 5d41a4b0
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 3ecad3a5
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 3ff88496
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 5a228c57
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 24e857c4
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-c40de49'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 53b3ef91
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-4e794be9'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-1e3ac56b'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-70a64eef'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 70f72547
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-53bb063f'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-53aceebe'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-539ed73d'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 70ccdec4
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 70daf645
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 631972f0
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-101a9975'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 110282d4
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-27bf5a50'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-5bfce21d'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2026c50e'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-21bf6eab'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-21db9dad'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+      - label: eCommerce
+        name: ecommerce
+        file: cms/_data/settings/ecommerce.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: eCommerce
+          - label: Currencies and Formats
+            name: currencies_and_formats
+            widget: object
+            fields:
+              - hint: >-
+                  Template used to format the price, you can use following
+                  placeholders: {amount}, {currencyCode}, {symbol}
+                name: template
+                label: Price Template
+                widget: string
+                required: true
+              - hint: Character to divide decimals
+                name: decimal
+                label: Decimal
+                widget: string
+                required: true
+              - hint: Character to group amount
+                name: group
+                label: Group
+                widget: string
+                required: true
+              - hint: Number of fraction digits
+                name: fractionDigits
+                label: Fraction Digits
+                widget: number
+                required: true
+                value_type: int
+              - hint: Hide decimals for whole prices
+                name: hideDecimalForWholeNumbers
+                label: Hide decimals
+                widget: boolean
+                required: false
+              - hint: ''
+                name: currencies
+                label: Currencies
+                widget: list
+                required: true
+                min: 1
+                fields:
+                  - hint: Currency Code (3 char) all lowercase
+                    name: currencyCode
+                    label: Currency Code
+                    widget: string
+                    required: true
+                  - hint: ''
+                    name: symbol
+                    label: Symbol
+                    widget: string
+                    required: true
+          - label: Snipcart
+            name: snipcart
+            widget: object
+            fields:
+              - hint: Public Api Key
+                name: apiKey
+                label: Api Key
+                widget: string
+                required: true
+          - label: Snipcart Style
+            name: css
+            widget: object
+            fields:
+              - hint: 'Original Font Family: Open Sans,sans-serif'
+                name: main-font
+                label: Main font
+                widget: string
+                required: true
+              - hint: 'Original Font Family: Montserrat,sans-serif'
+                name: heading-font
+                label: Heading font
+                widget: string
+                required: true
+              - hint: 'Original color: #f7f7f8'
+                name: bgColor-alt
+                label: BgColor alt
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: bgColor-badge
+                label: BgColor badge
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fceae8'
+                name: bgColor-buttonDanger-active
+                label: BgColor buttonDanger active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fceae8'
+                name: bgColor-buttonDanger-focus
+                label: BgColor buttonDanger focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fdefed'
+                name: bgColor-buttonDanger-hover
+                label: BgColor buttonDanger hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: bgColor-buttonPrimary
+                label: BgColor buttonPrimary
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: bgColor-buttonPrimary-active
+                label: BgColor buttonPrimary active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: bgColor-buttonPrimary-focus
+                label: BgColor buttonPrimary focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0d59f2'
+                name: bgColor-buttonPrimary-hover
+                label: BgColor buttonPrimary hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e7f6fe'
+                name: bgColor-buttonSecondary-active
+                label: BgColor buttonSecondary active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #ecf8fe'
+                name: bgColor-buttonSecondary-focus
+                label: BgColor buttonSecondary focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #ecf8fe'
+                name: bgColor-buttonSecondary-hover
+                label: BgColor buttonSecondary hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: bgColor-default
+                label: BgColor default
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: bgColor-input
+                label: BgColor input
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0aa7f5'
+                name: bgColor-input-checked
+                label: BgColor input checked
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #f1f2f4'
+                name: bgColor-input-disabled
+                label: BgColor input disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: bgColor-input-focus
+                label: BgColor input focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: bgColor-input-hover
+                label: BgColor input hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: bgColor-link
+                label: BgColor link
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #d9f0fc'
+                name: bgColor-link-focus
+                label: BgColor link focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #f1f2f4'
+                name: bgColor-modal
+                label: BgColor modal
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-badge
+                label: BorderColor badge
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-badge-active
+                label: BorderColor badge active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e3e6e8'
+                name: borderColor-badge-disabled
+                label: BorderColor badge disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonDanger
+                label: BorderColor buttonDanger
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-buttonDanger-active
+                label: BorderColor buttonDanger active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonDanger-disabled
+                label: BorderColor buttonDanger disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonDanger-error
+                label: BorderColor buttonDanger error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonDanger-focus
+                label: BorderColor buttonDanger focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonDanger-hover
+                label: BorderColor buttonDanger hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonDanger-success
+                label: BorderColor buttonDanger success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonPrimary
+                label: BorderColor buttonPrimary
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-buttonPrimary-active
+                label: BorderColor buttonPrimary active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonPrimary-disabled
+                label: BorderColor buttonPrimary disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-buttonPrimary-error
+                label: BorderColor buttonPrimary error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonPrimary-focus
+                label: BorderColor buttonPrimary focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonPrimary-hover
+                label: BorderColor buttonPrimary hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-buttonPrimary-success
+                label: BorderColor buttonPrimary success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonSecondary
+                label: BorderColor buttonSecondary
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-buttonSecondary-active
+                label: BorderColor buttonSecondary active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonSecondary-disabled
+                label: BorderColor buttonSecondary disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonSecondary-error
+                label: BorderColor buttonSecondary error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonSecondary-focus
+                label: BorderColor buttonSecondary focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonSecondary-hover
+                label: BorderColor buttonSecondary hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: transparent'
+                name: borderColor-buttonSecondary-success
+                label: BorderColor buttonSecondary success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e3e6e8'
+                name: borderColor-default
+                label: BorderColor default
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e3e6e8'
+                name: borderColor-input
+                label: BorderColor input
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0aa7f5'
+                name: borderColor-input-checked
+                label: BorderColor input checked
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e3e6e8'
+                name: borderColor-input-disabled
+                label: BorderColor input disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e85a4a'
+                name: borderColor-input-error
+                label: BorderColor input error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0aa7f5'
+                name: borderColor-input-focus
+                label: BorderColor input focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0aa7f5'
+                name: borderColor-input-hover
+                label: BorderColor input hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-link
+                label: BorderColor link
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-link-active
+                label: BorderColor link active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-link-focus
+                label: BorderColor link focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-link-hover
+                label: BorderColor link hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: currentColor'
+                name: borderColor-success
+                label: BorderColor success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #8f99a3'
+                name: color-alt
+                label: Color alt
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0d59f2'
+                name: color-badge
+                label: Color badge
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0d59f2'
+                name: color-badge-active
+                label: Color badge active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #2e3338'
+                name: color-badge-disabled
+                label: Color badge disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #9e2215'
+                name: color-buttonDanger
+                label: Color buttonDanger
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #9e2215'
+                name: color-buttonDanger-active
+                label: Color buttonDanger active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #8f99a3'
+                name: color-buttonDanger-disabled
+                label: Color buttonDanger disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e85a4a'
+                name: color-buttonDanger-error
+                label: Color buttonDanger error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #9e2215'
+                name: color-buttonDanger-focus
+                label: Color buttonDanger focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e85a4a'
+                name: color-buttonDanger-hover
+                label: Color buttonDanger hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #29c768'
+                name: color-buttonDanger-success
+                label: Color buttonDanger success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-buttonPrimary
+                label: Color buttonPrimary
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-buttonPrimary-active
+                label: Color buttonPrimary active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e3e6e8'
+                name: color-buttonPrimary-disabled
+                label: Color buttonPrimary disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-buttonPrimary-error
+                label: Color buttonPrimary error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-buttonPrimary-focus
+                label: Color buttonPrimary focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-buttonPrimary-hover
+                label: Color buttonPrimary hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-buttonPrimary-success
+                label: Color buttonPrimary success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #133986'
+                name: color-buttonSecondary
+                label: Color buttonSecondary
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #133986'
+                name: color-buttonSecondary-active
+                label: Color buttonSecondary active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #8f99a3'
+                name: color-buttonSecondary-disabled
+                label: Color buttonSecondary disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e85a4a'
+                name: color-buttonSecondary-error
+                label: Color buttonSecondary error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #133986'
+                name: color-buttonSecondary-focus
+                label: Color buttonSecondary focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: color-buttonSecondary-hover
+                label: Color buttonSecondary hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #29c768'
+                name: color-buttonSecondary-success
+                label: Color buttonSecondary success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #2e3338'
+                name: color-default
+                label: Color default
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #e85a4a'
+                name: color-error
+                label: Color error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #2e3338'
+                name: color-input
+                label: Color input
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #fff'
+                name: color-input-checked
+                label: Color input checked
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #8f99a3'
+                name: color-input-disabled
+                label: Color input disabled
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #9e2215'
+                name: color-input-error
+                label: Color input error
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #2e3338'
+                name: color-input-focus
+                label: Color input focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #2e3338'
+                name: color-input-hover
+                label: Color input hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #8f99a3'
+                name: color-inputIcon
+                label: Color inputIcon
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #2e3338'
+                name: color-inputLabel
+                label: Color inputLabel
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: color-link
+                label: Color link
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: color-link-active
+                label: Color link active
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #1a4db3'
+                name: color-link-focus
+                label: Color link focus
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #0d59f2'
+                name: color-link-hover
+                label: Color link hover
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+              - hint: 'Original color: #29c768'
+                name: color-success
+                label: Color success
+                widget: color
+                required: true
+                enableAlpha: true
+                allowInput: true
+local_backend: true
+publish_mode: editorial_workflow

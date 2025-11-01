@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 64.8 64.8">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke: #2facff;
+      }
+
+      .st0, .st1 {
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .st1 {
+        stroke: #888;
+      }
+
+      .st2 {
+        fill: #888;
+      }
+    </style>
+  </defs>
+  <g id="Group_122">
+    <path id="Vector" class="st1" d="M14.7,11.7h12v14.9h-14.8v-12.1c0-.7.3-1.4.8-2,.5-.5,1.2-.8,2-.8Z"/>
+    <ellipse id="Ellipse" class="st2" cx="19.3" cy="19.2" rx="1" ry="1"/>
+    <path id="Vector-2" class="st1" d="M11.9,37.2h14.8v14.9h-12c-.7,0-1.4-.3-2-.8-.5-.5-.8-1.2-.8-2v-12.1Z"/>
+    <ellipse id="Ellipse-2" class="st2" cx="19.3" cy="44.7" rx="1" ry="1"/>
+    <path id="Vector-3" class="st1" d="M37.3,11.7h12c.7,0,1.4.3,2,.8.5.5.8,1.2.8,2v12.1h-14.8v-14.9Z"/>
+    <ellipse id="Ellipse-3" class="st2" cx="44.7" cy="19.2" rx="1" ry="1"/>
+    <path id="Vector-4" class="st0" d="M32,11.7v8.5"/>
+    <path id="Vector-5" class="st0" d="M11.9,32h20.1v7.5"/>
+    <path id="Vector-6" class="st0" d="M39.4,52.3h-7.4v-7.5"/>
+    <path id="Vector-7" class="st0" d="M37.3,39.5v-7.5h14.8v11.2"/>
+    <path id="Vector-8" class="st0" d="M46.8,52.1v-12.7"/>
+  </g>
+</svg>

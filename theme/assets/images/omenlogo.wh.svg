@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 216 36">
+  <!-- Generator: Adobe Illustrator 29.5.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 141)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <g id="Page-1">
+    <g id="Group">
+      <path id="Path" class="st0" d="M184.9,33.1V9.4h-16.2v23.7h-5.1V4.3h26.3v28.8h-5.1Z"/>
+      <path id="Path-2" class="st0" d="M144.1,9.4h-21.2v6.7h16.5v5.1h-16.5v6.7h21.2v5.1h-26.3V4.3h26.3v5.1Z"/>
+      <path id="Path-3" class="st0" d="M97.7,33.1h-5V11.6l-9.2,3.7-9.2-3.7v21.4h-5V4.1l14.3,5.7,14.3-5.7v29Z"/>
+      <path id="Combined-Shape" class="st0" d="M37.6,2.5c8.6,0,15.5,6.9,15.5,15.5s-6.9,15.5-15.5,15.5-15.5-6.9-15.5-15.5,6.9-15.5,15.5-15.5ZM37.6,7.7c-5.7,0-10.4,4.5-10.4,10.2,0,5.7,4.5,10.4,10.2,10.4,5.7,0,10.4-4.5,10.4-10.2,0,0,0,0,0,0,0-5.7-4.6-10.3-10.2-10.3Z"/>
+    </g>
+  </g>
+</svg>
