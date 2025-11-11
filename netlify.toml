@@ -3,12 +3,12 @@ publish = "public"
 command = "npm run build"
 functions = "functions"
 
-# GitHub OAuth callback handler
+# GitHub OAuth callback - redirect to our handler page
 [[redirects]]
   from = "/auth/github/callback"
-  to = "/.netlify/functions/github-callback"
+  to = "/admin/oauth-callback.html"
   status = 200
-  force = true
+  force = false
 
 # API redirects for functions
 [[redirects]]

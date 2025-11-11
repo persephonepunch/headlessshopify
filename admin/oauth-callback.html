@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub OAuth Handler</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin: 0;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .error {
+            color: #e74c3c;
+            background: #fadbd8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="spinner"></div>
+    <h1>Authenticating with GitHub...</h1>
+    <p>Please wait while we complete the authentication process.</p>
+    <div id="error" class="error" style="display:none;"></div>
+</div>
+
+<script>
+    // Get the authorization code from URL
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const error = params.get('error');
+
+    if (error) {
+        // Authentication failed
+        document.querySelector('#error').textContent = 'GitHub error: ' + (params.get('error_description') || error);
+        document.querySelector('#error').style.display = 'block';
+        document.querySelector('h1').textContent = 'Authentication Failed';
+        document.querySelector('.spinner').style.display = 'none';
+    } else if (code) {
+        // We have a code, exchange it for a token via our function
+        fetch('/.netlify/functions/github-callback?code=' + encodeURIComponent(code))
+            .then(res => res.json())
+            .then(data => {
+                if (data.access_token) {
+                    // Store the token
+                    localStorage.setItem('github_access_token', data.access_token);
+                    
+                    // Return to admin with token in hash
+                    window.location.href = '/admin/#/?access_token=' + data.access_token;
+                } else {
+                    throw new Error(data.error || 'Failed to get access token');
+                }
+            })
+            .catch(err => {
+                console.error('Auth error:', err);
+                document.querySelector('#error').textContent = 'Error: ' + err.message;
+                document.querySelector('#error').style.display = 'block';
+                document.querySelector('h1').textContent = 'Authentication Failed';
+                document.querySelector('.spinner').style.display = 'none';
+            });
+    } else {
+        // No code or error, shouldn't happen
+        document.querySelector('#error').textContent = 'No authorization code received';
+        document.querySelector('#error').style.display = 'block';
+        document.querySelector('h1').textContent = 'Invalid Request';
+        document.querySelector('.spinner').style.display = 'none';
+    }
+</script>
+</body>
+</html>

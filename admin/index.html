@@ -48,34 +48,6 @@
 <script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
 <script>
     CMS.registerPreviewStyle("preview.css");
-    
-    // GitHub OAuth custom backend
-    CMS.registerBackend('github', {
-        init: function() {
-            console.log('GitHub backend initialized');
-            return Promise.resolve();
-        },
-        
-        login: function() {
-            console.log('Login requested, redirecting to OAuth endpoint');
-            // Redirect to our OAuth function
-            window.location.href = '/auth/github/callback';
-            return new Promise(() => {}); // Never resolves; page redirects
-        },
-        
-        logout: function() {
-            console.log('Logout requested');
-            localStorage.removeItem('github_access_token');
-            return Promise.resolve();
-        },
-        
-        getToken: function() {
-            console.log('Getting token from localStorage');
-            const token = localStorage.getItem('github_access_token');
-            console.log('Token:', token ? 'exists' : 'not found');
-            return Promise.resolve(token);
-        }
-    });
 </script>
 <script src="widgets/price.js"></script>
 <script src="widgets/prop-table.js"></script>
