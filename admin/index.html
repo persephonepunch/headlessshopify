@@ -49,42 +49,9 @@
 <script>
     CMS.registerPreviewStyle("preview.css");
     
-    // Custom GitHub authentication
+    // Custom GitHub OAuth authentication
     const clientId = 'Ov23liAKZVenZF64MIOQ';
     const baseUrl = 'https://headlessshopify.netlify.app';
-    
-    // Create a custom backend
-    CMS.registerBackend('custom-github', {
-        init() {
-            return Promise.resolve();
-        },
-        
-        authenticate(credentials) {
-            return fetch('/.netlify/functions/github-callback?code=' + credentials.code)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.access_token) {
-                        localStorage.setItem('github_access_token', data.access_token);
-                        return { token: data.access_token };
-                    }
-                    throw new Error(data.error || 'Authentication failed');
-                });
-        },
-        
-        login() {
-            const redirectUri = encodeURIComponent(baseUrl + '/admin/oauth-callback.html');
-            const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=repo`;
-            window.location.href = authUrl;
-        },
-        
-        logout() {
-            localStorage.removeItem('github_access_token');
-        },
-        
-        getToken() {
-            return Promise.resolve(localStorage.getItem('github_access_token'));
-        }
-    });
     
     // Check if we have a token in the URL from oauth-callback
     const params = new URLSearchParams(window.location.hash.substring(1));
@@ -93,6 +60,36 @@
         // Clean up the URL
         window.history.replaceState({}, document.title, '/admin/');
     }
+    
+    // Create a custom backend class
+    class CustomGitHubBackend {
+        init() {
+            return Promise.resolve();
+        }
+        
+        login() {
+            const redirectUri = encodeURIComponent(baseUrl + '/admin/oauth-callback.html');
+            const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=repo`;
+            window.location.href = authUrl;
+            return new Promise(() => {}); // Never resolves
+        }
+        
+        logout() {
+            localStorage.removeItem('github_access_token');
+            return Promise.resolve();
+        }
+        
+        getToken() {
+            return Promise.resolve(localStorage.getItem('github_access_token'));
+        }
+        
+        isLoggedIn() {
+            return !!localStorage.getItem('github_access_token');
+        }
+    }
+    
+    // Register the custom backend
+    CMS.registerBackend('custom-github', CustomGitHubBackend);
 </script>
 <script src="widgets/price.js"></script>
 <script src="widgets/prop-table.js"></script>
