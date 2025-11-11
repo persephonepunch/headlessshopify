@@ -2,7 +2,6 @@ backend:
   name: github
   repo: persephonepunch/headlessshopify
   branch: main
-  auth_endpoint: /.netlify/functions/oauth
 media_folder: theme/assets/images
 public_folder: /assets/images
 collections:

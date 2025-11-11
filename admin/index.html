@@ -44,20 +44,28 @@
     <link href="widgets.css" rel="stylesheet">
 </head>
 <body>
-<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
+<!-- Define global config BEFORE loading Decap CMS -->
 <script>
-    CMS.registerPreviewStyle("preview.css");
-    
-    // Override GitHub authentication
+    // This must be defined before Decap CMS loads
     window.CMS_CONFIG = {
         backend: {
             name: 'github',
             repo: 'persephonepunch/headlessshopify',
             branch: 'main',
+            api_root: 'https://api.github.com',
+            base_url: 'https://headlessshopify.netlify.app',
             auth_endpoint: '/.netlify/functions/oauth'
-        }
+        },
+        local_backend: false,
+        media_folder: 'theme/assets/images',
+        public_folder: '/assets/images'
     };
+</script>
+
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
+<script>
+    CMS.registerPreviewStyle("preview.css");
 </script>
 <script src="widgets/price.js"></script>
 <script src="widgets/prop-table.js"></script>

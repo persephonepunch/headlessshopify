@@ -1,44 +1,58 @@
 /**
  * OAuth proxy for GitHub - allows Decap CMS to authenticate with GitHub
- * This function handles the OAuth flow transparently
+ * Handles both the authorization redirect AND the token exchange
  */
 
 const https = require('https');
+const querystring = require('querystring');
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
-    const path = event.path || '';
+    const query = event.queryStringParameters || {};
     
-    console.log(`OAuth handler: ${method} ${path}`);
+    console.log(`OAuth handler: ${method}`, query);
     
-    // Handle GET requests (OAuth callback from GitHub)
-    if (method === 'GET') {
-        const code = event.queryStringParameters?.code;
-        const state = event.queryStringParameters?.state;
+    // Handle authorization request - redirect to GitHub
+    if (method === 'GET' && !query.code) {
+        const clientId = process.env.GITHUB_CLIENT_ID;
+        const redirectUri = `${process.env.SITE_URL}/auth/github/callback`;
+        const scope = 'repo';
         
-        if (!code) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ error: 'No authorization code' }),
-            };
-        }
+        const githubAuthUrl = `https://github.com/login/oauth/authorize?` +
+            `client_id=${clientId}&` +
+            `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+            `scope=${encodeURIComponent(scope)}`;
+        
+        return {
+            statusCode: 302,
+            headers: {
+                'Location': githubAuthUrl,
+                'Cache-Control': 'no-cache'
+            },
+            body: ''
+        };
+    }
+    
+    // Handle callback - exchange code for token
+    if (method === 'GET' && query.code) {
+        const code = query.code;
         
         try {
             const tokenData = await exchangeCodeForToken(code);
             
-            // Build the success response that Decap CMS expects
-            const response = {
-                token: tokenData.access_token,
-                provider: 'github',
-            };
-            
+            // Return token as JSON for Decap CMS
             return {
                 statusCode: 200,
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
+                    'Cache-Control': 'no-cache'
                 },
-                body: JSON.stringify(response),
+                body: JSON.stringify({
+                    token: tokenData.access_token,
+                    provider: 'github',
+                    github_token: tokenData.access_token
+                }),
             };
         } catch (error) {
             console.error('Token exchange error:', error);
@@ -52,15 +66,16 @@ exports.handler = async (event) => {
         }
     }
     
-    // Handle POST requests (for token refresh)
-    if (method === 'POST') {
+    // Handle OPTIONS for CORS
+    if (method === 'OPTIONS') {
         return {
             statusCode: 200,
             headers: {
-                'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type'
             },
-            body: JSON.stringify({ success: true }),
+            body: ''
         };
     }
     
@@ -101,6 +116,8 @@ function exchangeCodeForToken(code) {
                     const data = JSON.parse(body);
                     if (data.error) {
                         reject(new Error(data.error_description || data.error));
+                    } else if (!data.access_token) {
+                        reject(new Error('No access token in response'));
                     } else {
                         resolve(data);
                     }
