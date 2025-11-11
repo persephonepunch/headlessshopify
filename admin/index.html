@@ -83,6 +83,106 @@
         div[class*="ViewControlsSection"] {
             display: none;
         }
+
+        /* Login form styles */
+        .xano-login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .xano-login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .xano-login-form h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .xano-login-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .xano-login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .xano-login-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .xano-login-form input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .xano-login-form button {
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .xano-login-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .xano-login-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .xano-error {
+            color: #e74c3c;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #fadbd8;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .xano-loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -90,61 +190,185 @@
 </head>
 <body>
 
+<div id="app"></div>
+
 <script>
-    // Check if we have a token in localStorage - if not, redirect to login
-    const token = localStorage.getItem('github_token');
-    
-    if (!token) {
-        // Check if we're coming back from OAuth callback
-        const urlParams = new URLSearchParams(window.location.search);
-        const callbackToken = urlParams.get('token');
-        
-        if (callbackToken) {
-            // We got a token from the callback, save it
-            localStorage.setItem('github_token', callbackToken);
-            // Clean up URL and reload
-            window.history.replaceState({}, document.title, '/admin/');
-            location.reload();
-        } else {
-            // Redirect to login
-            window.location.href = '/.netlify/functions/oauth';
+    // Xano authentication handler
+    class XanoAuthHandler {
+        constructor() {
+            this.token = localStorage.getItem('xano_token');
+            this.user = JSON.parse(localStorage.getItem('xano_user') || '{}');
+            this.permissions = JSON.parse(localStorage.getItem('xano_permissions') || '{}');
+        }
+
+        async login(email, password) {
+            try {
+                const response = await fetch('/.netlify/functions/xano-auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Login failed');
+                }
+
+                const data = await response.json();
+                
+                // Store token and user info
+                localStorage.setItem('xano_token', data.token);
+                localStorage.setItem('xano_user', JSON.stringify(data.user));
+                
+                this.token = data.token;
+                this.user = data.user;
+
+                // Get user permissions
+                await this.fetchPermissions();
+
+                return true;
+            } catch (error) {
+                console.error('Login error:', error);
+                throw error;
+            }
+        }
+
+        async fetchPermissions() {
+            try {
+                const response = await fetch('/.netlify/functions/xano-auth/permissions', {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${this.token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to fetch permissions');
+
+                const data = await response.json();
+                localStorage.setItem('xano_permissions', JSON.stringify(data.permissions || {}));
+                this.permissions = data.permissions || {};
+            } catch (error) {
+                console.warn('Could not fetch permissions:', error);
+                this.permissions = {};
+            }
+        }
+
+        isLoggedIn() {
+            return !!this.token;
+        }
+
+        canAccessCollection(collection) {
+            if (this.user.role === 'admin') return true;
+            const perms = this.permissions[collection];
+            return perms && perms.read;
+        }
+
+        logout() {
+            localStorage.removeItem('xano_token');
+            localStorage.removeItem('xano_user');
+            localStorage.removeItem('xano_permissions');
+            window.location.reload();
         }
     }
-</script>
 
-<!-- Only load Decap CMS if we have a token -->
-<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
+    const authHandler = new XanoAuthHandler();
 
-<script>
-    // Configure Decap CMS with GitHub backend using the token
-    window.CMS_CONFIG = {
-        backend: {
-            name: 'github',
-            repo: 'persephonepunch/headlessshopify',
-            branch: 'main'
-        },
-        local_backend: false,
-        media_folder: 'theme/assets/images',
-        public_folder: '/assets/images'
-    };
+    // Show login form if not logged in
+    if (!authHandler.isLoggedIn()) {
+        document.body.innerHTML = `
+            <div class="xano-login-container">
+                <div class="xano-login-form">
+                    <h1>Admin Login</h1>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" id="login-btn">Sign In</button>
+                        <div id="error-message"></div>
+                    </form>
+                </div>
+            </div>
+        `;
 
-    // Override the auth method to use our stored token
-    if (window.CMS) {
-        const originalInit = window.CMS.init.bind(window.CMS);
-        window.CMS.init = function(config) {
-            // Let Decap load normally
-            return originalInit(config);
-        };
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('login-btn');
+            const errorDiv = document.getElementById('error-message');
+
+            btn.disabled = true;
+            btn.innerHTML = '<div class="xano-loading"></div>';
+            errorDiv.innerHTML = '';
+
+            try {
+                await authHandler.login(email, password);
+                window.location.reload();
+            } catch (error) {
+                errorDiv.innerHTML = `<div class="xano-error">${error.message}</div>`;
+                btn.disabled = false;
+                btn.innerHTML = 'Sign In';
+            }
+        });
+    } else {
+        // Load Decap CMS with token
+        document.body.innerHTML = '<div id="cms"></div>';
     }
 </script>
 
+<!-- Load Decap CMS only if authenticated -->
 <script>
-    CMS.registerPreviewStyle("preview.css");
+    if (authHandler && authHandler.isLoggedIn()) {
+        // Dynamically load Decap CMS
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+        script.onload = () => {
+            // Configure Decap CMS
+            window.CMS_CONFIG = {
+                backend: {
+                    name: 'github',
+                    repo: 'persephonepunch/headlessshopify',
+                    branch: 'main'
+                },
+                local_backend: false,
+                media_folder: 'theme/assets/images',
+                public_folder: '/assets/images'
+            };
+
+            // Register custom preview styles and widgets
+            if (window.CMS) {
+                setTimeout(() => {
+                    CMS.registerPreviewStyle("preview.css");
+                }, 500);
+            }
+        };
+        document.head.appendChild(script);
+
+        // Load immutable
+        const immutableScript = document.createElement('script');
+        immutableScript.src = 'https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js';
+        document.head.appendChild(immutableScript);
+
+        // Load custom widgets
+        setTimeout(() => {
+            const priceWidget = document.createElement('script');
+            priceWidget.src = 'widgets/price.js';
+            document.body.appendChild(priceWidget);
+
+            const propTableWidget = document.createElement('script');
+            propTableWidget.src = 'widgets/prop-table.js';
+            document.body.appendChild(propTableWidget);
+
+            const propValuesWidget = document.createElement('script');
+            propValuesWidget.src = 'widgets/prop-values.js';
+            document.body.appendChild(propValuesWidget);
+        }, 1000);
+    }
 </script>
-<script src="widgets/price.js"></script>
-<script src="widgets/prop-table.js"></script>
-<script src="widgets/prop-values.js"></script>
+
 </body>
 </html>
 </body>
