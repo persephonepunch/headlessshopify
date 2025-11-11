@@ -1,5 +1,5 @@
 backend:
-  name: github
+  name: custom-github
   repo: persephonepunch/headlessshopify
   branch: main
 media_folder: theme/assets/images
