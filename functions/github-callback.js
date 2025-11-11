@@ -1,18 +1,26 @@
 /**
  * Netlify Function: GitHub OAuth Handler
- * Handles the GitHub OAuth callback and token exchange
+ * Handles the GitHub OAuth callback and token exchange for Decap CMS
  */
 
 const https = require('https');
 
 exports.handler = async (event) => {
     const code = event.queryStringParameters?.code;
-    const state = event.queryStringParameters?.state;
 
     if (!code) {
+        // No code - user hasn't been redirected from GitHub yet
+        // This is the initial login endpoint
+        const clientId = process.env.GITHUB_CLIENT_ID;
+        const redirectUri = 'https://headlessshopify.netlify.app/auth/github/callback';
+        const scope = 'repo';
+        const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
+        
         return {
-            statusCode: 400,
-            body: JSON.stringify({ error: 'No code provided' }),
+            statusCode: 302,
+            headers: {
+                Location: authUrl,
+            },
         };
     }
 
@@ -23,18 +31,80 @@ exports.handler = async (event) => {
         // Exchange code for access token
         const tokenResponse = await exchangeCodeForToken(code, clientId, clientSecret);
 
-        // Redirect to success page with token
+        // Return HTML that will store the token and redirect
+        const html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GitHub Authentication</title>
+    <script>
+        // Store the token in localStorage
+        localStorage.setItem('github_access_token', '${tokenResponse.access_token}');
+        
+        // Redirect back to the admin
+        window.location.href = '/admin/';
+    </script>
+</head>
+<body>
+    <p>Authenticating...</p>
+</body>
+</html>
+        `;
+
         return {
-            statusCode: 301,
+            statusCode: 200,
             headers: {
-                Location: `/admin/#/auth/done?access_token=${tokenResponse.access_token}&provider=github`,
+                'Content-Type': 'text/html; charset=utf-8',
             },
+            body: html,
         };
     } catch (error) {
         console.error('OAuth error:', error);
+        const errorHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication Error</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+        .error-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        h1 {
+            color: #e74c3c;
+        }
+        p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-box">
+        <h1>Authentication Failed</h1>
+        <p>${error.message}</p>
+        <p><a href="/admin/">← Back to CMS</a></p>
+    </div>
+</body>
+</html>
+        `;
+
         return {
-            statusCode: 500,
-            body: JSON.stringify({ error: 'Authentication failed', details: error.message }),
+            statusCode: 400,
+            headers: {
+                'Content-Type': 'text/html; charset=utf-8',
+            },
+            body: errorHtml,
         };
     }
 };

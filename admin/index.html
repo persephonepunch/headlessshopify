@@ -42,18 +42,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link href="widgets.css" rel="stylesheet">
-    <!-- Decap CMS OAuth Script -->
-    <script>
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            window.netlifyIdentity = window.netlifyIdentity || {};
-        }
-    </script>
 </head>
 <body>
 <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
 <script>
     CMS.registerPreviewStyle("preview.css");
+    
+    // GitHub OAuth custom backend
+    CMS.registerBackend('github', class extends CMS.AuthenticationBackend {
+        login() {
+            // Redirect to our OAuth function
+            window.location.href = '/auth/github/callback';
+        }
+        
+        logout() {
+            localStorage.removeItem('github_access_token');
+        }
+        
+        getToken() {
+            return Promise.resolve(localStorage.getItem('github_access_token'));
+        }
+    });
 </script>
 <script src="widgets/price.js"></script>
 <script src="widgets/prop-table.js"></script>
