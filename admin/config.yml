@@ -1,9 +1,7 @@
 backend:
-  name: git-gateway
-  accept_roles:
-    - admin
-    - editor
-  branch: master
+  name: github
+  repo: persephonepunch/headlessshopify
+  branch: main
 media_folder: theme/assets/images
 public_folder: /assets/images
 collections:
