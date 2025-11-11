@@ -49,47 +49,15 @@
 <script>
     CMS.registerPreviewStyle("preview.css");
     
-    // Custom GitHub OAuth authentication
-    const clientId = 'Ov23liAKZVenZF64MIOQ';
-    const baseUrl = 'https://headlessshopify.netlify.app';
-    
-    // Check if we have a token in the URL from oauth-callback
-    const params = new URLSearchParams(window.location.hash.substring(1));
-    if (params.has('access_token')) {
-        localStorage.setItem('github_access_token', params.get('access_token'));
-        // Clean up the URL
-        window.history.replaceState({}, document.title, '/admin/');
-    }
-    
-    // Create a custom backend class
-    class CustomGitHubBackend {
-        init() {
-            return Promise.resolve();
+    // Override GitHub authentication
+    window.CMS_CONFIG = {
+        backend: {
+            name: 'github',
+            repo: 'persephonepunch/headlessshopify',
+            branch: 'main',
+            auth_endpoint: '/.netlify/functions/oauth'
         }
-        
-        login() {
-            const redirectUri = encodeURIComponent(baseUrl + '/admin/oauth-callback.html');
-            const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=repo`;
-            window.location.href = authUrl;
-            return new Promise(() => {}); // Never resolves
-        }
-        
-        logout() {
-            localStorage.removeItem('github_access_token');
-            return Promise.resolve();
-        }
-        
-        getToken() {
-            return Promise.resolve(localStorage.getItem('github_access_token'));
-        }
-        
-        isLoggedIn() {
-            return !!localStorage.getItem('github_access_token');
-        }
-    }
-    
-    // Register the custom backend
-    CMS.registerBackend('custom-github', CustomGitHubBackend);
+    };
 </script>
 <script src="widgets/price.js"></script>
 <script src="widgets/prop-table.js"></script>

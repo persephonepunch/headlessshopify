@@ -3,10 +3,10 @@ publish = "public"
 command = "npm run build"
 functions = "functions"
 
-# GitHub OAuth callback - redirect to our handler page
+# OAuth endpoint for Decap CMS
 [[redirects]]
-  from = "/auth/github/callback"
-  to = "/admin/oauth-callback.html"
+  from = "/.netlify/functions/oauth"
+  to = "/.netlify/functions/oauth"
   status = 200
   force = false
 
