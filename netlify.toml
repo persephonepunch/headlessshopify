@@ -3,13 +3,6 @@ publish = "public"
 command = "npm run build"
 functions = "functions"
 
-# OAuth endpoint for Decap CMS
-[[redirects]]
-  from = "/.netlify/functions/oauth"
-  to = "/.netlify/functions/oauth"
-  status = 200
-  force = false
-
 # API redirects for functions
 [[redirects]]
   from = "/api/*"
