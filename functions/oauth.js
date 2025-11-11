@@ -1,10 +1,9 @@
 /**
- * OAuth proxy for GitHub - allows Decap CMS to authenticate with GitHub
- * Handles both the authorization redirect AND the token exchange
+ * OAuth proxy for GitHub - handles both authorization and token exchange
+ * Redirects back to /admin with token in query param
  */
 
 const https = require('https');
-const querystring = require('querystring');
 
 exports.handler = async (event) => {
     const method = event.httpMethod;
@@ -12,16 +11,19 @@ exports.handler = async (event) => {
     
     console.log(`OAuth handler: ${method}`, query);
     
-    // Handle authorization request - redirect to GitHub
+    // Handle authorization initiation - redirect to GitHub
     if (method === 'GET' && !query.code) {
         const clientId = process.env.GITHUB_CLIENT_ID;
-        const redirectUri = `${process.env.SITE_URL}/auth/github/callback`;
+        const redirectUri = `${process.env.SITE_URL}/.netlify/functions/oauth`;
         const scope = 'repo';
         
         const githubAuthUrl = `https://github.com/login/oauth/authorize?` +
             `client_id=${clientId}&` +
             `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-            `scope=${encodeURIComponent(scope)}`;
+            `scope=${encodeURIComponent(scope)}&` +
+            `allow_signup=true`;
+        
+        console.log('Redirecting to GitHub:', githubAuthUrl);
         
         return {
             statusCode: 302,
@@ -33,35 +35,42 @@ exports.handler = async (event) => {
         };
     }
     
-    // Handle callback - exchange code for token
+    // Handle callback from GitHub - exchange code for token
     if (method === 'GET' && query.code) {
         const code = query.code;
         
+        console.log('Received authorization code:', code.substring(0, 10) + '...');
+        
         try {
             const tokenData = await exchangeCodeForToken(code);
+            const token = tokenData.access_token;
             
-            // Return token as JSON for Decap CMS
+            console.log('Successfully exchanged code for token');
+            
+            // Redirect back to admin with token in query param
+            const adminUrl = `${process.env.SITE_URL}/admin/?token=${encodeURIComponent(token)}`;
+            
             return {
-                statusCode: 200,
+                statusCode: 302,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
+                    'Location': adminUrl,
                     'Cache-Control': 'no-cache'
                 },
-                body: JSON.stringify({
-                    token: tokenData.access_token,
-                    provider: 'github',
-                    github_token: tokenData.access_token
-                }),
+                body: ''
             };
         } catch (error) {
-            console.error('Token exchange error:', error);
+            console.error('Token exchange error:', error.message);
+            
+            // Redirect to admin with error
+            const errorUrl = `${process.env.SITE_URL}/admin/?error=${encodeURIComponent(error.message)}`;
+            
             return {
-                statusCode: 400,
+                statusCode: 302,
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Location': errorUrl,
+                    'Cache-Control': 'no-cache'
                 },
-                body: JSON.stringify({ error: error.message }),
+                body: ''
             };
         }
     }
@@ -90,6 +99,11 @@ function exchangeCodeForToken(code) {
         const clientId = process.env.GITHUB_CLIENT_ID;
         const clientSecret = process.env.GITHUB_CLIENT_SECRET;
         
+        if (!clientId || !clientSecret) {
+            reject(new Error('GitHub credentials not configured'));
+            return;
+        }
+        
         const postData = JSON.stringify({
             client_id: clientId,
             client_secret: clientSecret,
@@ -113,21 +127,25 @@ function exchangeCodeForToken(code) {
             res.on('data', chunk => { body += chunk; });
             res.on('end', () => {
                 try {
+                    console.log('GitHub response:', body.substring(0, 100));
                     const data = JSON.parse(body);
                     if (data.error) {
-                        reject(new Error(data.error_description || data.error));
+                        reject(new Error(`GitHub error: ${data.error_description || data.error}`));
                     } else if (!data.access_token) {
                         reject(new Error('No access token in response'));
                     } else {
                         resolve(data);
                     }
                 } catch (e) {
-                    reject(e);
+                    reject(new Error(`Failed to parse response: ${e.message}`));
                 }
             });
         });
         
-        req.on('error', reject);
+        req.on('error', (error) => {
+            reject(new Error(`Request failed: ${error.message}`));
+        });
+        
         req.write(postData);
         req.end();
     });

@@ -44,31 +44,108 @@
     <link href="widgets.css" rel="stylesheet">
 </head>
 <body>
-<!-- Define global config BEFORE loading Decap CMS -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decap CMS | Admin</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        aside a span {
+            display: inline-flex !important;
+            justify-content: center;
+            align-items: center
+        }
+
+        aside a span svg {
+            display: none !important;
+        }
+
+        aside a span::before {
+            font-family: "Font Awesome 5 Free";
+            font-size: 1rem;
+            font-weight: 900;
+        }
+
+        aside a[href^="#/collections/"] span::before {
+            content: "\f15b";
+        }
+
+        aside a[href="#/collections/pages"] span::before {
+            content: "\f15c";
+        }
+
+        aside a[href="#/collections/settings"] span::before {
+            content: "\f53f";
+        }
+
+        div[class*="ViewControlsSection"] {
+            display: none;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="widgets.css" rel="stylesheet">
+</head>
+<body>
+
 <script>
-    // This must be defined before Decap CMS loads
+    // Check if we have a token in localStorage - if not, redirect to login
+    const token = localStorage.getItem('github_token');
+    
+    if (!token) {
+        // Check if we're coming back from OAuth callback
+        const urlParams = new URLSearchParams(window.location.search);
+        const callbackToken = urlParams.get('token');
+        
+        if (callbackToken) {
+            // We got a token from the callback, save it
+            localStorage.setItem('github_token', callbackToken);
+            // Clean up URL and reload
+            window.history.replaceState({}, document.title, '/admin/');
+            location.reload();
+        } else {
+            // Redirect to login
+            window.location.href = '/.netlify/functions/oauth';
+        }
+    }
+</script>
+
+<!-- Only load Decap CMS if we have a token -->
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
+
+<script>
+    // Configure Decap CMS with GitHub backend using the token
     window.CMS_CONFIG = {
         backend: {
             name: 'github',
             repo: 'persephonepunch/headlessshopify',
-            branch: 'main',
-            api_root: 'https://api.github.com',
-            base_url: 'https://headlessshopify.netlify.app',
-            auth_endpoint: '/.netlify/functions/oauth'
+            branch: 'main'
         },
         local_backend: false,
         media_folder: 'theme/assets/images',
         public_folder: '/assets/images'
     };
+
+    // Override the auth method to use our stored token
+    if (window.CMS) {
+        const originalInit = window.CMS.init.bind(window.CMS);
+        window.CMS.init = function(config) {
+            // Let Decap load normally
+            return originalInit(config);
+        };
+    }
 </script>
 
-<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/immutable@4.0.0-rc.12/dist/immutable.min.js"></script>
 <script>
     CMS.registerPreviewStyle("preview.css");
 </script>
 <script src="widgets/price.js"></script>
 <script src="widgets/prop-table.js"></script>
 <script src="widgets/prop-values.js"></script>
+</body>
+</html>
 </body>
 </html>
