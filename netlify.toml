@@ -3,6 +3,14 @@ publish = "public"
 command = "npm run build"
 functions = "functions"
 
+# OAuth redirect for GitHub authentication
+[[redirects]]
+  from = "/auth/done"
+  to = "/admin/#/auth/done"
+  status = 200
+  force = true
+
+# API redirects for functions
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
