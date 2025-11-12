@@ -14,12 +14,12 @@ exports.handler = async (event) => {
     
     // Get Xano config from environment
     const XANO_BASE_URL = process.env.XANO_BASE_URL;
-    const XANO_API_KEY = process.env.XANO_API_KEY;
-    
-    if (!XANO_BASE_URL || !XANO_API_KEY) {
+    const XANO_API_KEY = process.env.XANO_API_KEY; // optional: may be empty if you only have a user JWT
+
+    if (!XANO_BASE_URL) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Xano credentials not configured' }),
+            body: JSON.stringify({ error: 'XANO_BASE_URL not configured' }),
         };
     }
     
@@ -55,19 +55,23 @@ exports.handler = async (event) => {
         // Handle token validation
         if (method === 'POST' && path.includes('/validate')) {
             const token = event.headers.authorization?.replace('Bearer ', '');
-            
-            if (!token) {
+
+            if (!token && !XANO_API_KEY) {
                 return {
                     statusCode: 401,
-                    body: JSON.stringify({ error: 'No token provided' }),
+                    body: JSON.stringify({ error: 'No token provided and no workspace API key configured' }),
                 };
             }
-            
-            // Call Xano validate endpoint
+
+            // If we have a user JWT (token) forward it; otherwise use workspace API key
+            const authHeader = token ? `Bearer ${token}` : `Bearer ${XANO_API_KEY}`;
+
+            // Call Xano validate endpoint (expects auth header)
             const validationResult = await callXanoAPI('/validate', 'POST', 
-                { token }, 
+                {}, 
                 XANO_BASE_URL, 
-                XANO_API_KEY
+                XANO_API_KEY,
+                { Authorization: authHeader }
             );
             
             return {
@@ -83,19 +87,22 @@ exports.handler = async (event) => {
         // Handle permissions request
         if (method === 'GET' && path.includes('/permissions')) {
             const token = event.headers.authorization?.replace('Bearer ', '');
-            
-            if (!token) {
+
+            if (!token && !XANO_API_KEY) {
                 return {
                     statusCode: 401,
-                    body: JSON.stringify({ error: 'No token provided' }),
+                    body: JSON.stringify({ error: 'No token provided and no workspace API key configured' }),
                 };
             }
-            
-            // Get user permissions from Xano
+
+            const authHeader = token ? `Bearer ${token}` : `Bearer ${XANO_API_KEY}`;
+
+            // Get user permissions from Xano (we forward auth header)
             const permissionsResult = await callXanoAPI('/permissions', 'POST', 
-                { token }, 
+                {}, 
                 XANO_BASE_URL, 
-                XANO_API_KEY
+                XANO_API_KEY,
+                { Authorization: authHeader }
             );
             
             return {
@@ -138,34 +145,39 @@ exports.handler = async (event) => {
 /**
  * Call Xano API endpoint
  */
-function callXanoAPI(path, method, data, baseUrl, apiKey) {
+function callXanoAPI(path, method, data, baseUrl, apiKey, extraHeaders = {}) {
     return new Promise((resolve, reject) => {
-        // Remove protocol from baseUrl if present
-        const url = new URL(baseUrl);
+        // Build full URL from baseUrl + path
+        const url = new URL(path, baseUrl);
         const hostname = url.hostname;
-        const pathname = `/api/v1/public${path}`;
-        
-        const postData = JSON.stringify(data);
-        
+        const pathname = url.pathname + (url.search || '');
+
+        const postData = JSON.stringify(data || {});
+
+        // Build headers; prefer extraHeaders.Authorization if provided, otherwise use apiKey
+        const headers = Object.assign({}, extraHeaders);
+        headers['Content-Type'] = 'application/json';
+        headers['Content-Length'] = Buffer.byteLength(postData);
+
+        if (!headers.Authorization && apiKey) {
+            headers.Authorization = `Bearer ${apiKey}`;
+        }
+
         const options = {
             hostname,
             path: pathname,
             method,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Length': Buffer.byteLength(postData),
-            },
+            headers,
         };
-        
+
         console.log(`Calling Xano: ${hostname}${pathname}`);
-        
+
         const req = https.request(options, (res) => {
             let body = '';
             res.on('data', chunk => { body += chunk; });
             res.on('end', () => {
                 try {
-                    const response = JSON.parse(body);
+                    const response = body ? JSON.parse(body) : {};
                     if (res.statusCode >= 400) {
                         reject(new Error(response.error || `HTTP ${res.statusCode}`));
                     } else {
@@ -176,11 +188,11 @@ function callXanoAPI(path, method, data, baseUrl, apiKey) {
                 }
             });
         });
-        
+
         req.on('error', (error) => {
             reject(new Error(`Request failed: ${error.message}`));
         });
-        
+
         req.write(postData);
         req.end();
     });
