@@ -156,13 +156,13 @@
                               <div class="product-card__accordion__header" data-toggle="#product2" onclick="toggleAccordion(event);">Pairs well with</div>
                               <div class="product-card__accordion__content" id="product2">
                                 <div class="product-card__pairs-well-with__layout">
-                                  <a class="product-card__pairs-well-with" shopify-attr--disabled="!product.availableForSale" onclick="getElementById('product-modal').showModal(); getElementById('product-modal-context').update(event);">
+                                  <div class="product-card__pairs-well-with">
                                     <div class="product-card__pairs-well-with__card">
                                       <shopify-context type="collection" handle="omen">
                                         <template>
                                           <shopify-list-context type="product" query="collection.products" first="1">
                                             <template>
-                                              <div class="product-card__container">
+                                              <div class="product-card__container" onclick="getElementById('product-modal').showModal(); getElementById('product-modal-context').update(event);">
                                                 <div class="product-card__media">
                                                   <shopify-media width="120" height="120" query="product.selectedOrFirstAvailableVariant.image"></shopify-media>
                                                 </div>
@@ -185,14 +185,14 @@
                                         </template>
                                       </shopify-context>
                                     </div>
-                                  </a>
-                                  <a class="product-card__pairs-well-with" shopify-attr--disabled="!product.availableForSale" onclick="getElementById('product-modal').showModal(); getElementById('product-modal-context').update(event);">
+                                  </div>
+                                  <div class="product-card__pairs-well-with">
                                     <div class="product-card__pairs-well-with__card last">
                                       <shopify-context type="collection" handle="omen">
                                         <template>
                                           <shopify-list-context type="product" query="collection.products" first="2" skip="1">
                                             <template>
-                                              <div class="product-card__container">
+                                              <div class="product-card__container" onclick="getElementById('product-modal').showModal(); getElementById('product-modal-context').update(event);">
                                                 <div class="product-card__media">
                                                   <shopify-media width="120" height="120" query="product.selectedOrFirstAvailableVariant.image"></shopify-media>
                                                 </div>
@@ -215,7 +215,7 @@
                                         </template>
                                       </shopify-context>
                                     </div>
-                                  </a>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -610,7 +610,7 @@
     gap: 0;
   }
   .product-card__pairs-well-with {
-    cursor: pointer;
+    cursor: default;
   }
   .product-card__pairs-well-with__card {
     padding: 1.5rem 0;
@@ -628,6 +628,7 @@
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    cursor: pointer;
   }
   .product-card__pairs-well-with__card .product-card__info {
     gap: 0;
